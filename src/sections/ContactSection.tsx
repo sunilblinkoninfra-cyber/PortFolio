@@ -4,15 +4,44 @@ import { Github, Linkedin, Mail, Phone, ExternalLink } from "lucide-react";
 import React, { useState } from "react";
 
 export function ContactSection() {
-  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    projectType: "AI Systems Architecture",
+    message: ""
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus("sending");
-    // Simulate API call
-    setTimeout(() => {
-      setFormStatus("sent");
-    }, 1500);
+    
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setFormStatus("sent");
+        setFormData({ name: "", email: "", projectType: "AI Systems Architecture", message: "" });
+      } else {
+        setFormStatus("error");
+        setTimeout(() => setFormStatus("idle"), 3000);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setFormStatus("error");
+      setTimeout(() => setFormStatus("idle"), 3000);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const socialLinks = [
@@ -78,7 +107,9 @@ export function ContactSection() {
                   Skip the form and schedule a 30-min discovery call directly to discuss your AI transformation strategy.
                 </p>
                 <a 
-                  href="#" 
+                  href="https://calendly.com/kumars92/30min" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-between w-full p-4 rounded-2xl bg-[#D7E2EA] text-[#0C0C0C] font-bold uppercase tracking-widest hover:scale-[1.02] transition-transform"
                 >
                   Schedule Call <ExternalLink size={20} />
@@ -94,7 +125,10 @@ export function ContactSection() {
                 <label className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest ml-4">Full Name</label>
                 <input 
                   type="text" 
+                  name="name"
                   required
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="John Doe"
                   className="w-full bg-[#D7E2EA]/5 border border-[#D7E2EA]/10 rounded-2xl px-6 py-4 text-[#D7E2EA] outline-none focus:border-[#D7E2EA]/40 transition-colors"
                 />
@@ -104,7 +138,10 @@ export function ContactSection() {
                 <label className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest ml-4">Email Address</label>
                 <input 
                   type="email" 
+                  name="email"
                   required
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="john@example.com"
                   className="w-full bg-[#D7E2EA]/5 border border-[#D7E2EA]/10 rounded-2xl px-6 py-4 text-[#D7E2EA] outline-none focus:border-[#D7E2EA]/40 transition-colors"
                 />
@@ -112,7 +149,12 @@ export function ContactSection() {
 
               <div className="flex flex-col gap-2">
                 <label className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest ml-4">Project Type</label>
-                <select className="w-full bg-[#D7E2EA]/5 border border-[#D7E2EA]/10 rounded-2xl px-6 py-4 text-[#D7E2EA] outline-none focus:border-[#D7E2EA]/40 transition-colors appearance-none">
+                <select 
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleChange}
+                  className="w-full bg-[#D7E2EA]/5 border border-[#D7E2EA]/10 rounded-2xl px-6 py-4 text-[#D7E2EA] outline-none focus:border-[#D7E2EA]/40 transition-colors appearance-none"
+                >
                   <option className="bg-[#0C0C0C]">AI Systems Architecture</option>
                   <option className="bg-[#0C0C0C]">Blockchain Intelligence</option>
                   <option className="bg-[#0C0C0C]">Process Automation</option>
@@ -123,8 +165,11 @@ export function ContactSection() {
               <div className="flex flex-col gap-2">
                 <label className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest ml-4">Message</label>
                 <textarea 
+                  name="message"
                   required
                   rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="Tell me about your business goals..."
                   className="w-full bg-[#D7E2EA]/5 border border-[#D7E2EA]/10 rounded-2xl px-6 py-4 text-[#D7E2EA] outline-none focus:border-[#D7E2EA]/40 transition-colors resize-none"
                 />
@@ -132,16 +177,19 @@ export function ContactSection() {
 
               <button 
                 type="submit"
-                disabled={formStatus !== "idle"}
+                disabled={formStatus === "sending" || formStatus === "sent"}
                 className={`mt-4 w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] transition-all duration-300 ${
                   formStatus === "sent" 
                   ? "bg-green-500 text-white" 
+                  : formStatus === "error"
+                  ? "bg-red-500 text-white"
                   : "bg-white text-[#0C0C0C] hover:scale-[1.02] active:scale-[0.98]"
                 }`}
               >
                 {formStatus === "idle" && "Send Message"}
                 {formStatus === "sending" && "Sending..."}
                 {formStatus === "sent" && "Message Sent!"}
+                {formStatus === "error" && "Error Sending"}
               </button>
             </form>
           </FadeIn>
