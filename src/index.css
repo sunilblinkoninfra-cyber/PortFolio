@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Kanit", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html, body, #root {
+    @apply bg-[#0C0C0C] m-0 p-0;
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glass-nav {
+    background: rgba(12, 12, 12, 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .marquee-peek {
+    height: 120px;
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    bottom: -40px;
+    opacity: 0.3;
+    filter: grayscale(1);
+    pointer-events: none;
+  }
+}
