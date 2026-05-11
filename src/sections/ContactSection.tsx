@@ -71,11 +71,11 @@ export function ContactSection() {
                     </div>
                     <span className="text-[#D7E2EA] text-lg sm:text-xl font-light">kumars92@outlook.com</span>
                   </a>
-                  <a href="tel:+919540110558" className="flex items-center gap-4 group">
+                  <a href="tel:+919773643993" className="flex items-center gap-4 group">
                     <div className="w-12 h-12 rounded-full border border-[#D7E2EA]/20 flex items-center justify-center group-hover:border-[#D7E2EA] transition-colors">
                       <Phone className="text-[#D7E2EA]/60 group-hover:text-[#D7E2EA]" size={20} />
                     </div>
-                    <span className="text-[#D7E2EA] text-lg sm:text-xl font-light">+91-9540-110-558</span>
+                    <span className="text-[#D7E2EA] text-lg sm:text-xl font-light">+91 97736 43993</span>
                   </a>
                 </div>
               </div>
