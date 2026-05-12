@@ -21,7 +21,7 @@ export default function App() {
       {/* Simple Footer */}
       <footer className="w-full py-20 px-8 text-center bg-[#0C0C0C] border-t border-[#D7E2EA]/10">
         <p className="text-[#D7E2EA]/40 uppercase tracking-widest text-xs">
-          Built with &hearts; by Sunil Kumar &bull; &copy; 2026
+          Built with &hearts; by Sunil &bull; &copy; 2026
         </p>
       </footer>
     </main>
