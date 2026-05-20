@@ -45,8 +45,8 @@ export function ContactSection() {
   };
 
   const socialLinks = [
-    { name: "LinkedIn", icon: <Linkedin size={24} />, url: "https://linkedin.com/in/sunil-kumar" },
-    { name: "GitHub", icon: <Github size={24} />, url: "https://github.com/sunil-kumar" },
+    { name: "LinkedIn", icon: <Linkedin size={24} />, url: "https://www.linkedin.com/in/sunil-kumar-374187176" },
+    { name: "GitHub", icon: <Github size={24} />, url: "https://github.com/sunilblinkoninfra-cyber" },
   ];
 
   return (
